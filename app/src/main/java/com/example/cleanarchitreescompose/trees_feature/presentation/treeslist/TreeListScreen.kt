@@ -18,6 +18,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.cleanarchitreescompose.R
 import com.example.cleanarchitreescompose.trees_feature.domain.model.Tree
 import com.example.cleanarchitreescompose.trees_feature.presentation.destinations.TreeDetailScreenDestination
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -51,10 +53,19 @@ fun TreeList(navigator: DestinationsNavigator,
     val loadError = viewModel.loadError.value  /* no need to use remember for viewModel variables */
     val isLoading = viewModel.isLoading.value
 
-    LazyColumn(modifier = Modifier.padding(bottom = 50.dp)) {
-        items(viewModel.treesList) { tree ->
-            TreeCard(navigator = navigator, tree = tree)
-            Spacer(modifier = Modifier.height(5.dp))
+    val swipeRefreshState = rememberSwipeRefreshState(viewModel.isLoading.value)
+
+    SwipeRefresh(
+        state = swipeRefreshState,
+        onRefresh = {
+            viewModel.loadTreeList()
+        },
+    ) {
+        LazyColumn(modifier = Modifier.padding(bottom = 50.dp)) {
+            items(viewModel.treesList) { tree ->
+                TreeCard(navigator = navigator, tree = tree)
+                Spacer(modifier = Modifier.height(5.dp))
+            }
         }
     }
 
