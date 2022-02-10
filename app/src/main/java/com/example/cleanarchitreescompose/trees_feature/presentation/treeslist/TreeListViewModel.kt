@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cleanarchitreescompose.trees_feature.domain.model.Tree
 import com.example.cleanarchitreescompose.trees_feature.domain.repository.TreesRepository
+import com.example.cleanarchitreescompose.trees_feature.domain.util.DispatcherProvider
 import com.example.cleanarchitreescompose.trees_feature.domain.util.Resource
 import com.example.cleanarchitreescompose.trees_feature.presentation.util.DataMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TreeListViewModel @Inject constructor(
     private val repository: TreesRepository,
-//    private val dispatcher: DispatcherProvider
+    private val dispatcher: DispatcherProvider
 ) : ViewModel() {
 
     var treesList = mutableStateListOf<Tree>()
@@ -27,7 +28,7 @@ class TreeListViewModel @Inject constructor(
     }
 
     fun loadTreeList() {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher.main) {
             isLoading.value = true
             when(val result = repository.getTreesList()) {
                 is Resource.Success -> {

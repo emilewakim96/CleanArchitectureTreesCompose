@@ -6,6 +6,8 @@ import com.example.cleanarchitreescompose.trees_feature.data.repository.TreesRep
 import com.example.cleanarchitreescompose.trees_feature.domain.repository.TreesRepository
 import com.example.cleanarchitreescompose.trees_feature.domain.use_case.GetTreesUseCase
 import com.example.cleanarchitreescompose.trees_feature.domain.use_case.TreesUseCases
+import com.example.cleanarchitreescompose.trees_feature.domain.util.DefaultDispatchers
+import com.example.cleanarchitreescompose.trees_feature.domain.util.DispatcherProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -54,4 +56,8 @@ object AppModule {
             getTreesUseCase = GetTreesUseCase(repository)
         )
     }
+
+    @Singleton
+    @Provides
+    fun provideDispatcher(): DispatcherProvider = DefaultDispatchers()
 }
