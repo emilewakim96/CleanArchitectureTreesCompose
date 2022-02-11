@@ -1,7 +1,7 @@
 package com.example.cleanarchitreescompose.trees_feature.presentation.util
 
+import com.example.cleanarchitreescompose.trees_feature.data.data_source.entity.Tree
 import com.example.cleanarchitreescompose.trees_feature.data.data_source.remote.responses.Record
-import com.example.cleanarchitreescompose.trees_feature.domain.model.Tree
 
 class DataMapper {
     companion object {

@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.cleanarchitreescompose.R
-import com.example.cleanarchitreescompose.trees_feature.domain.model.Tree
+import com.example.cleanarchitreescompose.trees_feature.data.data_source.entity.Tree
 import com.example.cleanarchitreescompose.trees_feature.presentation.destinations.TreeDetailScreenDestination
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState

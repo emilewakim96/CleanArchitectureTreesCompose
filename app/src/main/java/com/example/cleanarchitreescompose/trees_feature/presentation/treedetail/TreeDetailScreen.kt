@@ -16,7 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cleanarchitreescompose.R
-import com.example.cleanarchitreescompose.trees_feature.domain.model.Tree
+import com.example.cleanarchitreescompose.trees_feature.data.data_source.entity.Tree
 import com.example.cleanarchitreescompose.trees_feature.presentation.util.TreesTransitions
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator

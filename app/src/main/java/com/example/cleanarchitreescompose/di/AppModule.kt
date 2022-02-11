@@ -1,7 +1,17 @@
 package com.example.cleanarchitreescompose.di
 
+import android.app.Application
+import androidx.room.Room
 import com.example.cleanarchitreescompose.Constants.BASE_URL
+import com.example.cleanarchitreescompose.TreesApp
+import com.example.cleanarchitreescompose.di.qualifier.LocalData
+import com.example.cleanarchitreescompose.di.qualifier.RemoteData
+import com.example.cleanarchitreescompose.trees_feature.data.data_source.TreesDataSource
+import com.example.cleanarchitreescompose.trees_feature.data.data_source.local.TreeDao
+import com.example.cleanarchitreescompose.trees_feature.data.data_source.local.TreesDatabase
+import com.example.cleanarchitreescompose.trees_feature.data.data_source.local.TreesLocalDataSource
 import com.example.cleanarchitreescompose.trees_feature.data.data_source.remote.TreesApi
+import com.example.cleanarchitreescompose.trees_feature.data.data_source.remote.TreesRemoteDataSource
 import com.example.cleanarchitreescompose.trees_feature.data.repository.TreesRepositoryImpl
 import com.example.cleanarchitreescompose.trees_feature.domain.repository.TreesRepository
 import com.example.cleanarchitreescompose.trees_feature.domain.use_case.GetTreesUseCase
@@ -36,7 +46,20 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideTreesRepository(api: TreesApi): TreesRepository = TreesRepositoryImpl(api)
+    fun provideTreesRepository(
+        localDataSource: TreesLocalDataSource,
+        remoteDataSource: TreesRemoteDataSource
+    ): TreesRepository = TreesRepositoryImpl(localDataSource, remoteDataSource)
+
+    @Singleton
+    @Provides
+    @LocalData
+    fun provideLocalDataSource(treesDao: TreeDao): TreesDataSource = TreesLocalDataSource(treesDao)
+
+    @Singleton
+    @Provides
+    @RemoteData
+    fun provideRemoteDataSource(treesApi: TreesApi): TreesDataSource = TreesRemoteDataSource(treesApi)
 
     @Singleton
     @Provides
@@ -48,6 +71,20 @@ object AppModule {
             .build()
             .create(TreesApi::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideTreesDatabase(app: Application): TreesDatabase {
+        return Room.databaseBuilder(
+            app,
+            TreesDatabase::class.java,
+            TreesDatabase.DATABASE_NAME
+        ).build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideTreesDao(database: TreesDatabase): TreeDao = database.treeDao
 
     @Singleton
     @Provides

@@ -5,5 +5,5 @@ data class Record(
     val fields: Fields?,
     val geometry: Geometry?,
     val record_timestamp: String?,
-    val recordid: String?
+    val recordid: String
 )

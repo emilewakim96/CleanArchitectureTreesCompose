@@ -4,8 +4,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cleanarchitreescompose.trees_feature.domain.model.Tree
-import com.example.cleanarchitreescompose.trees_feature.domain.repository.TreesRepository
+import com.example.cleanarchitreescompose.trees_feature.data.data_source.entity.Tree
+import com.example.cleanarchitreescompose.trees_feature.domain.use_case.TreesUseCases
 import com.example.cleanarchitreescompose.trees_feature.domain.util.DispatcherProvider
 import com.example.cleanarchitreescompose.trees_feature.domain.util.Resource
 import com.example.cleanarchitreescompose.trees_feature.presentation.util.DataMapper
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TreeListViewModel @Inject constructor(
-    private val repository: TreesRepository,
+    private val treesUseCases: TreesUseCases,
     private val dispatcher: DispatcherProvider
 ) : ViewModel() {
 
@@ -30,7 +30,7 @@ class TreeListViewModel @Inject constructor(
     fun loadTreeList() {
         viewModelScope.launch(dispatcher.main) {
             isLoading.value = true
-            when(val result = repository.getTreesList()) {
+            when(val result = treesUseCases.getTreesUseCase()) {
                 is Resource.Success -> {
                     val trees = result.data?.records?.map {
                         DataMapper.mapRecordToTree(it)
