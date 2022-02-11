@@ -2,8 +2,7 @@ package com.example.cleanarchitreescompose.di
 
 import android.app.Application
 import androidx.room.Room
-import com.example.cleanarchitreescompose.Constants.BASE_URL
-import com.example.cleanarchitreescompose.TreesApp
+import com.example.cleanarchitreescompose.trees_feature.util.Constants.BASE_URL
 import com.example.cleanarchitreescompose.di.qualifier.LocalData
 import com.example.cleanarchitreescompose.di.qualifier.RemoteData
 import com.example.cleanarchitreescompose.trees_feature.data.data_source.TreesDataSource

@@ -4,17 +4,30 @@ import com.example.cleanarchitreescompose.trees_feature.data.data_source.TreesDa
 import com.example.cleanarchitreescompose.trees_feature.data.data_source.entity.Tree
 import com.example.cleanarchitreescompose.trees_feature.data.data_source.remote.responses.Trees
 import com.example.cleanarchitreescompose.trees_feature.domain.util.Resource
+import com.example.cleanarchitreescompose.trees_feature.presentation.util.DataMapper
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class TreesLocalDataSource @Inject constructor(
-    treesDao: TreeDao
+    private val treesDao: TreeDao
 ): TreesDataSource {
 
     override suspend fun getTreesList(): Resource<Trees> {
-        TODO("Not yet implemented")
+        val response = try {
+            treesDao.getTrees()
+        } catch(e: Exception) {
+            return Resource.Error("An unknown error occured.")
+        }
+        return Resource.Success(
+            Trees(
+                records = response.first().map {
+                    DataMapper.mapTreeToRecord(it)
+                }
+            )
+        )
     }
 
     override suspend fun insertTree(tree: Tree) {
-        TODO("Not yet implemented")
+        treesDao.insertTree(tree)
     }
 }
