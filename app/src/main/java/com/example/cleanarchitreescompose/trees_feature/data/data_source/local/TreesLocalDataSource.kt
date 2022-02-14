@@ -12,19 +12,13 @@ class TreesLocalDataSource @Inject constructor(
     private val treesDao: TreeDao
 ): TreesDataSource {
 
-    override suspend fun getTreesList(): Resource<Trees> {
+    override suspend fun getTreesList(): Resource<List<Tree>> {
         val response = try {
             treesDao.getTrees()
         } catch(e: Exception) {
             return Resource.Error("An unknown error occured.")
         }
-        return Resource.Success(
-            Trees(
-                records = response.first().map {
-                    DataMapper.mapTreeToRecord(it)
-                }
-            )
-        )
+        return Resource.Success(response.first())
     }
 
     override suspend fun insertTree(tree: Tree) {

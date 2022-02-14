@@ -16,14 +16,12 @@ class TreesRepositoryImpl @Inject constructor(
     @RemoteData private val remoteDataSource: TreesRemoteDataSource
 ): TreesRepository {
 
-    private var cachedTrees: Trees? = null
+    private var cachedTrees: List<Tree> = listOf()
     private var cachedTreesIsDirty = false
 
-    override suspend fun getTreesList(): Resource<Trees> {
-        cachedTrees?.let {
-            if (!cachedTreesIsDirty) {
-                return Resource.Success(it)
-            }
+    override suspend fun getTreesList(): Resource<List<Tree>> {
+        if (cachedTrees.isNotEmpty() && !cachedTreesIsDirty) {
+            return Resource.Success(cachedTrees)
         }
         val remoteTrees = getAndSaveRemoteTrees()
         return if (cachedTreesIsDirty)
@@ -41,12 +39,12 @@ class TreesRepositoryImpl @Inject constructor(
         cachedTreesIsDirty = true
     }
 
-    private suspend fun getAndSaveRemoteTrees(): Resource<Trees> {
+    private suspend fun getAndSaveRemoteTrees(): Resource<List<Tree>> {
         val response = try {
             remoteDataSource.getTreesList().also {
                 it.data?.let { trees ->
-                    trees.records?.forEach { record ->
-                        saveTree(DataMapper.mapRecordToTree(record))
+                    trees.forEach { tree ->
+                        saveTree(tree)
                     }
                     cachedTreesIsDirty = false
                     cachedTrees = trees
@@ -58,9 +56,9 @@ class TreesRepositoryImpl @Inject constructor(
         return response
     }
 
-    private suspend fun getAndCacheLocalTrees(): Resource<Trees> {
+    private suspend fun getAndCacheLocalTrees(): Resource<List<Tree>> {
         return localDataSource.getTreesList().also {
-            cachedTrees = it.data
+            cachedTrees = it.data ?: listOf()
         }
     }
 }

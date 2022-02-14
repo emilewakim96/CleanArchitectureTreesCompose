@@ -32,9 +32,7 @@ class TreeListViewModel @Inject constructor(
             isLoading.value = true
             when(val result = treesUseCases.getTreesUseCase()) {
                 is Resource.Success -> {
-                    val trees = result.data?.records?.map {
-                        DataMapper.mapRecordToTree(it)
-                    }
+                    val trees = result.data
                     trees?.let {
                         treesList.addAll(it)
                     }

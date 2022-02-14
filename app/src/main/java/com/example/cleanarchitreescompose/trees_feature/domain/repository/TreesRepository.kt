@@ -6,7 +6,7 @@ import com.example.cleanarchitreescompose.trees_feature.domain.util.Resource
 
 interface TreesRepository {
 
-    suspend fun getTreesList(): Resource<Trees>
+    suspend fun getTreesList(): Resource<List<Tree>>
 
     suspend fun saveTree(tree: Tree)
 

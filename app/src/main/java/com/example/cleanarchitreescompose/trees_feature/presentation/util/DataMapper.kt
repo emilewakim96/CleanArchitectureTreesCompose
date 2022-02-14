@@ -14,15 +14,5 @@ class DataMapper {
                 recordid = record.recordid
             )
         }
-
-        fun mapTreeToRecord(tree: Tree): Record {
-            return Record(
-                datasetid = tree.datasetid,
-                fields = tree.fields,
-                geometry = tree.geometry,
-                record_timestamp = tree.record_timestamp,
-                recordid = tree.recordid
-            )
-        }
     }
 }
